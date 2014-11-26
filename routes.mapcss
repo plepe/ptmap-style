@@ -1,6 +1,8 @@
 /* Draw all tram routes in red */
-relation[type=route][route=tram] way {
-  color: #ff0000;
+@import url('route-types.mapcss');
+
+relation.type way {
+  color: parent_tag('color');
   width: 2;
 }
 

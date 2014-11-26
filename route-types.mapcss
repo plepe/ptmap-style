@@ -1,0 +1,4 @@
+relation[type=route][route=tram] {
+    set color = #ff0000;
+    set .type;
+}
