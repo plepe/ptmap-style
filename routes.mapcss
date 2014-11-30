@@ -1,31 +1,30 @@
 /* Draw all tram routes in red */
 @import url('route-types.mapcss');
 
-relation.type way {
-  color: parent_tag('color');
-  width: 2;
-}
-
 /* For every route iterate over all members to save their 'ref' tag
    to the child tag 'ref_list' */
-relation[route=tram] > line|z14-[railway] {
+relation.type way {
   set ref_list = eval(append(tag(ref_list), parent_tag(ref)));
+  color: parent_tag('color');
+  set .type = parent_tag('.type');
+  set color = parent_tag('color');
+  width: 2;
 }
 
 /* Remove duplicate refs from list, sort the list. Combine all lines
    with the same combination of routes into a new type 'tram_routes'. */
-line|z14-[railway] {
+way.type {
   set ref_list = eval(sort(unique(tag(ref_list))));
-  combine tram_routes eval(tag(ref_list));
+  combine routes eval(tag('.type') . '|' . tag(ref_list));
 }
 
 /* Render the tram_routes from the statement before. "Line Merge" the
    geometry for nicer label placement. Sort the refs "naturally" and
    merge with a colon. Repeat labels every ~128px. */
-tram_routes::label {
+routes::label {
   geo: eval(line_merge(prop(geo)));
   text: eval(join(', ', natsort(tag(ref_list))));
-  text-color: #ff0000;
+  text-color: tag('color');
   text-halo-color: #ffffff;
   text-halo-radius: 1;
   text-position: line;
