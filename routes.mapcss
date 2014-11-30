@@ -1,20 +1,22 @@
 /* Draw all tram routes in red */
 @import url('route-types.mapcss');
+@import url('priority.mapcss');
 
 /* For every route iterate over all members to save their 'ref' tag
    to the child tag 'ref_list' */
 relation.type way {
   set ref_list = eval(append(tag(ref_list), parent_tag(ref)));
+  set .priority_list = append(tag('.priority_list'), parent_tag('.priority'));
   color: parent_tag('color');
   set .type = parent_tag('.type');
   set color = parent_tag('color');
-  width: 2;
 }
 
 /* Remove duplicate refs from list, sort the list. Combine all lines
    with the same combination of routes into a new type 'tram_routes'. */
 way.type {
   set ref_list = eval(sort(unique(tag(ref_list))));
+  width: cond(contains(tag('.priority_list'), 2), 2, 1);
   combine routes eval(tag('.type') . '|' . tag(ref_list));
 }
 

@@ -1,0 +1,15 @@
+node <[role=stop] relation.type {
+    set .stop_counter = any(tag('.stop_counter'), 0) + 1;
+}
+
+way <[role!=platform] relation.type {
+    set .route_length = any(tag('.route_length'), 0) + line_length(parent_geo());
+}
+
+relation.type.stop_counter {
+    set .stop_distance = tag('.route_length') / tag('.stop_counter');
+    set .priority =
+        cond(tag('.stop_distance') > 300, 3,
+        cond(tag('.stop_distance') > 50, 2,
+        1));
+}
