@@ -1,6 +1,7 @@
 /* Draw all tram routes in red */
 @import url('route-types.mapcss');
 @import url('priority.mapcss');
+@import url('stop-types.mapcss');
 
 /* For every route iterate over all members to save their 'ref' tag
    to the child tag 'ref_list' */
@@ -32,28 +33,4 @@ routes::label {
   text-position: line;
   text-spacing: 128;
   z-index: 3;
-}
-
-/* Find all tram stops on the map and combine them (with the same name - only
-   if they have a name) to the new type 'tram_stop'. */
-node|z14-[railway=tram_stop][name] {
-  combine tram_stop eval(tag(name));
-}
-
-/* Build a polygon (a "convex hull") from all the tram stop nodes and
-   draw a buffer of 7px around them. */
-tram_stop {
-  geo: eval(buffer(convex_hull(prop(geo)), 7px));
-  fill-color: #a0a0a07f;
-  width: 1;
-  color: #a0a0a0af;
-  z-index: 1;
-}
-
-/* Print the stop name on the polygon from the geometry of the "default"
-   pseudo element (the statement above) */
-tram_stop::label {
-  geo: eval(prop(geo, default));
-  text: eval(tag(name));
-  z-index: 2;
 }

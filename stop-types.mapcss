@@ -1,0 +1,27 @@
+relation.type >[role=stop] node {
+    set .stop = parent_tag('.type');
+    set .priority_list = append(tag('.priority_list'), parent_tag('.priority'));
+}
+
+node.stop {
+    combine stop tag('name');
+}
+
+/* Build a polygon (a "convex hull") from all the tram stop nodes and
+   draw a buffer of 7px around them. */
+stop {
+  geo: eval(buffer(convex_hull(prop(geo)), 7px));
+  foo: debug(tag('name'));
+  fill-color: #a0a0a07f;
+  width: 1;
+  color: #a0a0a0af;
+  z-index: 1;
+}
+
+/* Print the stop name on the polygon from the geometry of the "default"
+   pseudo element (the statement above) */
+stop::label {
+  geo: eval(prop(geo, default));
+  text: eval(tag(name));
+  z-index: 2;
+}
