@@ -1,4 +1,30 @@
 relation[type=route][route=tram] {
     set color = #ff0000;
-    set .type;
+    set .type = tram;
+    color: #ff0000;
+    text-color: #ff0000;
+}
+relation[type=route][route=bus] {
+    set color = #ff7f00;
+    color: #ff7f00;
+    text-color: #ff7f00;
+    set .type = bus;
+}
+relation[type=route][route=subway] {
+    set color = #ff007f;
+    set .type = subway;
+    color: #ff007f;
+    text-color: #ff007f;
+}
+relation[type=route][route=train] {
+    set color = #000000;
+    set .type = train;
+    color: #000000;
+    text-color: #000000;
+}
+relation[type=route][route=ferry] {
+    set color = #0000ff;
+    set .type = train;
+    color: #0000ff;
+    text-color: #0000ff;
 }
