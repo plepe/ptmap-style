@@ -1,6 +1,7 @@
 relation.type >[role=stop] node {
     set .stop = parent_tag('.type');
     set .priority_list = append(tag('.priority_list'), parent_tag('.priority'));
+  set .ref_list = eval(append(tag('.ref_list'), parent_tag(ref)));
 }
 
 node.stop {
@@ -22,6 +23,6 @@ stop {
    pseudo element (the statement above) */
 stop::label {
   geo: eval(prop(geo, default));
-  text: eval(tag(name));
+  text: tag(name) . '\n' .  join(', ', natsort(unique(tag('.ref_list'))));
   z-index: 2;
 }
